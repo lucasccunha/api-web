@@ -77,7 +77,6 @@ public class Principal {
     }
 
 
-
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
         Serie serie = new Serie(dados);
@@ -129,6 +128,7 @@ public class Principal {
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }
+
     private void buscarSeriePorTitulo() {
         System.out.println("Escolha uma série pelo nome: ");
         var nomeSerie = leitura.nextLine();
@@ -144,10 +144,12 @@ public class Principal {
     private void buscarSeriePorAtor() {
         System.out.println("Qual o nome para busca? ");
         var nomeAtor = leitura.nextLine();
-        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCase(nomeAtor);
+        System.out.println("Avaliações a partir de que valor? ");
+        var avaliacao = leitura.nextDouble();
+        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
         System.out.println("Séries em que " + nomeAtor + " trabalhou: ");
         seriesEncontradas.forEach(s ->
-        System.out.println(s.getTitulo() + " avaliação " + s.getAvaliacao()));
+                System.out.println(s.getTitulo() + " avaliação " + s.getAvaliacao()));
     }
 
 }
