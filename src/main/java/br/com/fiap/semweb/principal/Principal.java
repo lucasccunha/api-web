@@ -1,10 +1,7 @@
 package br.com.fiap.semweb.principal;
 
 
-import br.com.fiap.semweb.model.DadosSerie;
-import br.com.fiap.semweb.model.DadosTemporada;
-import br.com.fiap.semweb.model.Episodio;
-import br.com.fiap.semweb.model.Serie;
+import br.com.fiap.semweb.model.*;
 import br.com.fiap.semweb.repository.SerieRepository;
 import br.com.fiap.semweb.service.ConsumoApi;
 import br.com.fiap.semweb.service.ConverteDados;
@@ -44,7 +41,8 @@ public class Principal {
                     3 - Listar Séries Buscadas
                     4 - Buscar série por titulo
                     5 - Buscar séries por ator   
-                    6 - Top 5 séries             
+                    6 - Top 5 séries  
+                    7 - Buscar séries por categoria           
                     0 - Sair                                 
                     """;
 
@@ -70,6 +68,9 @@ public class Principal {
                     break;
                 case 6:
                     buscarTop5Series();
+                    break;
+                case 7:
+                    buscarSeriesPorCategoria();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -160,5 +161,14 @@ public class Principal {
         List<Serie> seriesTop = repositorio.findTop5ByOrderByAvaliacaoDesc();
         seriesTop.forEach(s ->
                 System.out.println(s.getTitulo() + " avaliação " + s.getAvaliacao()));
+    }
+
+    private void buscarSeriesPorCategoria() {
+        System.out.println("Deseja buscar séries de que categoria/gênero? ");
+        var nomeGenero = leitura.nextLine();
+        Categoria categoria = Categoria.fromPortugues(nomeGenero);
+        List<Serie> seriesPorCategoria = repositorio.findByGenero(categoria);
+        System.out.println("Séries da categoria " + nomeGenero);
+        seriesPorCategoria.forEach(System.out::println);
     }
 }
