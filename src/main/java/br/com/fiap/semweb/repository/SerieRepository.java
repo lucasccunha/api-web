@@ -3,6 +3,7 @@ package br.com.fiap.semweb.repository;
 import br.com.fiap.semweb.model.Categoria;
 import br.com.fiap.semweb.model.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface SerieRepository extends JpaRepository <Serie, Long> {
     List<Serie> findByGenero(Categoria categoria);
 
     List<Serie> findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(int totalTemporadas, double avaliacao);
+
+    @Query("select s from Serie s WHERE s.totalTemporadas <= :totalTemporadas AND s.avaliacao >= :avaliacao")
+    List<Serie> seriesPorTemporadaEAvaliacao(int totalTemporadas, double avaliacao);
 }
