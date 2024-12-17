@@ -2,6 +2,7 @@ package br.com.fiap.semweb.service;
 
 import br.com.fiap.semweb.dto.EpisodioDTO;
 import br.com.fiap.semweb.dto.SerieDTO;
+import br.com.fiap.semweb.model.Categoria;
 import br.com.fiap.semweb.model.Serie;
 import br.com.fiap.semweb.repository.SerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +64,10 @@ public class SerieService {
                 .stream()
                 .map(e -> new EpisodioDTO(e.getTemporada(),e.getNumeroEpisodio(),e.getTitulo()))
                 .collect(Collectors.toList());
+    }
+
+    public List<SerieDTO> obterSeriesPorCategoria(String genero) {
+        Categoria categoria = Categoria.fromPortugues(genero);
+        return converteDados(repository.findByGenero(categoria));
     }
 }
