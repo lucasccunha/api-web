@@ -5,8 +5,10 @@ import br.com.fiap.semweb.dto.SerieDTO;
 import br.com.fiap.semweb.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -51,7 +53,13 @@ public class SerieController {
     }
 
     @GetMapping("/categoria/{genero}")
-    public List<SerieDTO> obterSeriesPorCategoria(@PathVariable String genero) {
-        return service.obterSeriesPorCategoria(genero);
+    public ResponseEntity<List<SerieDTO>> obterSeriesPorCategoria(@PathVariable String genero) {
+        try {
+            List<SerieDTO> series = service.obterSeriesPorCategoria(genero);
+            return ResponseEntity.ok(series);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+        }
     }
+
 }

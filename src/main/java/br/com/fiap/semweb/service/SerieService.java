@@ -2,6 +2,7 @@ package br.com.fiap.semweb.service;
 
 import br.com.fiap.semweb.dto.EpisodioDTO;
 import br.com.fiap.semweb.dto.SerieDTO;
+import br.com.fiap.semweb.exception.CategoriaNaoEncontradaException;
 import br.com.fiap.semweb.model.Categoria;
 import br.com.fiap.semweb.model.Serie;
 import br.com.fiap.semweb.repository.SerieRepository;
@@ -67,7 +68,12 @@ public class SerieService {
     }
 
     public List<SerieDTO> obterSeriesPorCategoria(String genero) {
-        Categoria categoria = Categoria.fromPortugues(genero);
+        Categoria categoria;
+        try {
+            categoria = Categoria.fromPortugues(genero);
+        } catch (IllegalArgumentException e) {
+            throw new CategoriaNaoEncontradaException("Nenhuma categoria encontrada. " + genero);
+        }
         return converteDados(repository.findByGenero(categoria));
     }
 }
