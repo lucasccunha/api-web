@@ -1,5 +1,6 @@
 package br.com.fiap.semweb.service;
 
+import br.com.fiap.semweb.dto.EpisodioDTO;
 import br.com.fiap.semweb.dto.SerieDTO;
 import br.com.fiap.semweb.model.Serie;
 import br.com.fiap.semweb.repository.SerieRepository;
@@ -32,7 +33,7 @@ public class SerieService {
     }
 
     public List<SerieDTO> obterLancamentos() {
-        return converteDados(repository.encontrarEpisodiosMaisRecentes());
+        return converteDados(repository.lancamentosMaisRecentes());
     }
 
     public SerieDTO obterPorId(Long id) {
@@ -41,6 +42,18 @@ public class SerieService {
         if (serie.isPresent()) {
             Serie s = serie.get();
             return new SerieDTO(s.getId(),s.getTitulo(), s.getTotalTemporadas(), s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse());
+        }
+        return null;
+    }
+
+    public List<EpisodioDTO> obterTodasTemporadas(Long id) {
+        Optional <Serie> serie = repository.findById(id);
+
+        if (serie.isPresent()) {
+            Serie s = serie.get();
+            return s.getEpisodios().stream()
+                    .map(e -> new EpisodioDTO(e.getTemporada(),e.getNumeroEpisodio(),e.getTitulo()))
+                    .collect(Collectors.toList());
         }
         return null;
     }

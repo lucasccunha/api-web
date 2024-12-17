@@ -1,5 +1,6 @@
 package br.com.fiap.semweb.controller;
 
+import br.com.fiap.semweb.dto.EpisodioDTO;
 import br.com.fiap.semweb.dto.SerieDTO;
 import br.com.fiap.semweb.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,10 @@ public class SerieController {
     @GetMapping("/{id}")
     public SerieDTO obterPorId(@PathVariable Long id) {
         return service.obterPorId(id);
+    }
+
+    @GetMapping("/{id}/temporadas/todas")
+    public List<EpisodioDTO> obterTodasTemporadas(@PathVariable Long id) {
+        return service.obterTodasTemporadas(id);
     }
 }
